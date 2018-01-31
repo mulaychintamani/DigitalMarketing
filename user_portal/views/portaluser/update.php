@@ -12,7 +12,8 @@ $this->params['breadcrumbs'][] = 'Update';
 ?>
 <div class="portal-user-update">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+    <h3><?= Html::encode(ucfirst($model->user_name)) ?></h3>
+    <hr>
 
     <?= $this->render('_form', [
         'model' => $model,

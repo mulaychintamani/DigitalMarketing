@@ -3,7 +3,7 @@
 namespace app\models;
 
 use Yii;
-
+use app\models\User_credit;
 /**
  * This is the model class for table "nishi_user".
  *
@@ -36,7 +36,7 @@ class Portal_user extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [[ 'user_name', 'user_password', 'user_client_name', 'user_email', 'user_mobile', 'user_acc_type', 'user_service_details_id'], 'required'],
+            [[ 'user_name', 'user_password', 'user_client_name', 'user_email', 'user_mobile', 'user_acc_type'], 'required'],
             [['user_mobile', 'user_service_details_id'], 'integer'],
             [['user_type', 'user_acc_type'], 'string'],
             [['user_created_at', 'user_updated_at'], 'safe'],
@@ -52,17 +52,42 @@ class Portal_user extends \yii\db\ActiveRecord
     {
         return [
             'user_id' => 'User ID',
-            'user_type' => 'User Type',
+            'user_type' => 'Type',
             'user_name' => 'User Name',
-            'user_password' => 'User Password',
-            'user_client_name' => 'User Client Name',
-            'user_company' => 'User Company',
-            'user_email' => 'User Email',
-            'user_mobile' => 'User Mobile',
-            'user_acc_type' => 'User Acc Type',
+            'user_password' => 'Password',
+            'user_client_name' => 'Client Name',
+            'user_company' => 'Company',
+            'user_email' => 'Email Address',
+            'user_mobile' => 'Mobile Number',
+            'user_acc_type' => 'Acc Type',
             'user_service_details_id' => 'User Service Details ID',
             'user_created_at' => 'User Created At',
             'user_updated_at' => 'User Updated At',
         ];
+    }
+
+    public function insertInitialCreadit($id)
+    {
+        $values = array();
+
+        if(isset($_POST['WhatsappCreadit'])&&$_POST['WhatsappCreadit']!=""){
+
+            array_push($values,array('Creadit'=>$_POST['WhatsappCreadit'],'Type'=>"Whatsapp"));
+
+        }
+        if (isset($_POST['FilterCredit'])&&$_POST['FilterCredit']!="") {
+        
+            array_push($values,array('Creadit'=>$_POST['FilterCredit'],'Type'=>"Filter"));
+
+        }
+
+        for ($i=0; $i < count($values) ; $i++){
+            $model_Creadit = new User_credit;
+            $model_Creadit->credit_user_id = $id;
+            $model_Creadit->credit_amount = $values[$i]['Creadit'];
+            $model_Creadit->credit_service = $values[$i]['Type'];
+            $model_Creadit->save();
+        }
+
     }
 }

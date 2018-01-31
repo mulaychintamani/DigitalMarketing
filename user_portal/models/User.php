@@ -116,7 +116,9 @@ class User extends \yii\base\Object implements \yii\web\IdentityInterface
         if($_POST['LoginForm']['password'] === $password){
 
             $session = Yii::$app->session;
-            $data=$arrayName = array('user_type' =>  $user->user_type,
+            $data=$arrayName = array(
+                'User_id' => $user->user_id,
+                'user_type' =>  $user->user_type,
                 'user_name' =>  $user->user_name,
                 'user_email' =>  $user->user_email,
                 'user_acc_type' =>  $user->user_acc_type, );

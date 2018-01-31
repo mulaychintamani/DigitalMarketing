@@ -12,9 +12,10 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="portal-user-view">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+    <h3><?= Html::encode(ucfirst($model->user_name)) ?></h3>
+    <hr>
 
-    <p>
+    <p class="pull-right">
         <?= Html::a('Update', ['update', 'id' => $model->user_id], ['class' => 'btn btn-primary']) ?>
         <?= Html::a('Delete', ['delete', 'id' => $model->user_id], [
             'class' => 'btn btn-danger',
@@ -37,9 +38,9 @@ $this->params['breadcrumbs'][] = $this->title;
             'user_email:email',
             'user_mobile',
             'user_acc_type',
-            'user_service_details_id',
-            'user_created_at',
-            'user_updated_at',
+           // 'user_service_details_id',
+           // 'user_created_at',
+           // 'user_updated_at',
         ],
     ]) ?>
 

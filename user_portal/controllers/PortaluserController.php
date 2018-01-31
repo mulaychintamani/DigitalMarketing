@@ -14,6 +14,23 @@ use yii\filters\VerbFilter;
  */
 class PortaluserController extends Controller
 {
+
+    public function beforeAction($event)
+        {
+            
+        if(!isset($_SESSION['main_user']))
+        {
+
+            return $this->redirect('/index.php?r=site/login');
+
+        }else
+        {
+            return true;
+        }
+
+        
+   
+        }
     /**
      * @inheritdoc
      */
@@ -35,8 +52,10 @@ class PortaluserController extends Controller
      */
     public function actionIndex()
     {
+
+        $userType=Yii::$app->request->get('type'); 
         $dataProvider = new ActiveDataProvider([
-            'query' => Portal_user::find(),
+            'query' => Portal_user::find()->where(['user_type' => $userType]),
         ]);
 
         return $this->render('index', [
@@ -66,6 +85,7 @@ class PortaluserController extends Controller
         $model = new Portal_user();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+                $model->insertInitialCreadit($model->user_id);
             return $this->redirect(['view', 'id' => $model->user_id]);
         } else {
             return $this->render('create', [

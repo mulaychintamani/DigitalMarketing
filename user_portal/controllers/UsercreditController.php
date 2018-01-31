@@ -8,6 +8,7 @@ use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use app\models\Portal_user;
 
 /**
  * UsercreditController implements the CRUD actions for User_credit model.
@@ -121,4 +122,19 @@ class UsercreditController extends Controller
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
+
+    /**
+     * Deletes an existing User_credit model.
+     * If deletion is successful, the browser will be redirected to the 'index' page.
+     * @param integer $id
+     * @return mixed
+     */
+    public function actionGetusers()
+    {
+        
+        /*$based= Portal_user::find()->where(['user_type' => $_GET['type']]);
+        print_r($based);*/
+    }
+
+
 }

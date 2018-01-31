@@ -113,3 +113,10 @@ a.desc:after {
 .nav > li > form > button.logout:focus {
     outline: none;
 }
+
+
+
+.disabledbutton {
+    pointer-events: none;
+    opacity: 0.4;
+}

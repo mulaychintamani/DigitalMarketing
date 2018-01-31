@@ -11,11 +11,12 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="transaction-log-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+    <h3><?= Html::encode($this->title) ?></h3>
+    <hr>
 
-    <p>
+   <!--  <p>
         <?= Html::a('Create Transaction Log', ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
+    </p> -->
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'columns' => [
@@ -26,9 +27,9 @@ $this->params['breadcrumbs'][] = $this->title;
             'trans_service',
             'trans_action',
             'trans_old_creadit',
-            // 'trans_trans_creadit',
-            // 'trans_new_creadit',
-            // 'trans_tansaction_by',
+             'trans_trans_creadit',
+             'trans_new_creadit',
+             'trans_tansaction_by',
             // 'trans_created_at',
 
             ['class' => 'yii\grid\ActionColumn'],

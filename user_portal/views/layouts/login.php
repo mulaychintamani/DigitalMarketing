@@ -22,8 +22,20 @@ AppAsset::register($this);
     <?= Html::csrfMetaTags() ?>
     <title><?= Html::encode($this->title) ?></title>
     <?php $this->head() ?>
+<style type="text/css">
+    .backgroundimage{
+        background-image: url('/img/LoginBanner.jpeg');
+        background-repeat: no-repeat;
+        background-size: contain;
+    }
+
+    .borderrediouszero{
+        border-radius: 0px;
+    }
+</style>
+
 </head>
-<body>
+<body style="background-color: #f2f2f2;">
 <?php $this->beginBody() ?>
 
 <div class="wrap">
