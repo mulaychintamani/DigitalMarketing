@@ -84,6 +84,8 @@ class PortaluserController extends Controller
     {
         $model = new Portal_user();
 
+       
+
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
                 $model->insertInitialCreadit($model->user_id);
             return $this->redirect(['view', 'id' => $model->user_id]);

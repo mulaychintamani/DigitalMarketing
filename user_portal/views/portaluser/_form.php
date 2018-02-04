@@ -30,8 +30,8 @@ use yii\bootstrap\ActiveForm;
 <!-- 
     <?=  $form->field($model, 'user_id')->textInput() ?> -->
 
-    <?= $form->field($model, 'user_type')->dropDownList([ 'Admin' => 'Admin', 'Reseller' => 'Reseller', 'User' => 'User', ], ['prompt' => '',"disabled"=>"disabled"]) ?>
-    <?php //echo $form->field($model, 'user_type')->hiddenInput(['value'=> $value])->label(false);?>
+    <?= $form->field($model, 'user_type')->dropDownList([ $userType => $userType ]) ?>
+    <?php //$form->field($model, 'user_type')->hiddenInput(['value'=> $userType])->label(false); ?>
 
     <?= $form->field($model, 'user_name')->textInput(['maxlength' => true]) ?>
 
@@ -70,7 +70,7 @@ use yii\bootstrap\ActiveForm;
     <tbody>
       <tr>
         <td>Whatsapp</td>
-        <td><input type="textInput" class="form-control" name="WhatsappCreadit" ></td>
+        <td><input type="textInput" class="form-control" name="WhatsappCreadit" value="0" ></td>
         <td>
             <select class="form-control">
                 <option value="">Select Plan</option>
@@ -81,7 +81,7 @@ use yii\bootstrap\ActiveForm;
       </tr>
       <tr>
         <td>Filter</td>
-        <td><input type="textInput" class="form-control" name="FilterCredit" ></td>
+        <td><input type="textInput" class="form-control" name="FilterCredit"  value="0"></td>
         <td>
             <select class="form-control">
                 <option>Select Plan</option>

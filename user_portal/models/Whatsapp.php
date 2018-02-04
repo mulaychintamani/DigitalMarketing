@@ -1,6 +1,8 @@
 <?php
 
 namespace app\models;
+use app\models\User_credit;
+
 
 use Yii;
 
@@ -66,5 +68,42 @@ class Whatsapp extends \yii\db\ActiveRecord
             'what_created_at' => 'What Created At',
             'what_updated_at' => 'What Updated At',
         ];
+    }
+
+    public function checkIsCreditAvialabel($CreditCount,$type)
+    {
+
+        if($type=="Filtering"){
+            $service="Filter";
+        }else {
+            $service="Whatsapp";
+        }
+
+        $UpdateCredit = User_credit::find()->where(['credit_user_id' =>$_SESSION['main_user']['User_id'],'credit_service' =>$service])->one();
+        
+        $oldAmout=$UpdateCredit->credit_amount;
+
+        if($oldAmout<$CreditCount)
+        {
+            echo "No Credit avialable"; exit;
+        }
+
+
+        $newAmount=$oldAmout-$CreditCount;
+
+       $UpdateCredit->credit_amount=$newAmount;
+       $UpdateCredit->save();
+
+       $transaction= new Transaction_log;
+        $transaction->trans_user_id=$_SESSION['main_user']['User_id'];
+        $transaction->trans_service=$service;
+        $transaction->trans_action="Remove";
+        $transaction->trans_old_creadit=$oldAmout;
+        $transaction->trans_trans_creadit=$CreditCount;
+        $transaction->trans_new_creadit=$newAmount;
+        $transaction->trans_tansaction_by=$_SESSION['main_user']['User_id'];
+        $transaction->save();
+
+
     }
 }

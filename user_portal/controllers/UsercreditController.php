@@ -9,6 +9,7 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use app\models\Portal_user;
+use app\models\Transaction_log;
 
 /**
  * UsercreditController implements the CRUD actions for User_credit model.
@@ -39,7 +40,8 @@ class UsercreditController extends Controller
         $dataProvider = new ActiveDataProvider([
             'query' => User_credit::find(),
         ]);
-
+        
+       
         return $this->render('index', [
             'dataProvider' => $dataProvider,
         ]);
@@ -69,8 +71,15 @@ class UsercreditController extends Controller
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->credit_id]);
         } else {
+
+            $dataProviderUser = Portal_user::find()->where(['user_type' => "User"])->all();
+
+            $dataProviderReseller = Portal_user::find()->where(['user_type' => "Reseller"])->all();
+
             return $this->render('create', [
                 'model' => $model,
+                 'dataProviderUser' => $dataProviderUser,
+                 'dataProviderReseller' => $dataProviderReseller,
             ]);
         }
     }
@@ -131,10 +140,61 @@ class UsercreditController extends Controller
      */
     public function actionGetusers()
     {
-        
-        /*$based= Portal_user::find()->where(['user_type' => $_GET['type']]);
-        print_r($based);*/
+        //print_r($_GET['user_id']);
+       $responce=User_credit::find()->where(['credit_user_id' => $_GET['user_id']])->all();
+      // print_r($responce);
+
+       $Creditt = array();
+       for ($i=0; $i < count($responce) ; $i++) { 
+            
+            $Creditt[$responce[$i]->credit_service] = $responce[$i]->credit_amount;
+       }
+        if(count($Creditt)>0)
+            return json_encode($Creditt);
+        else
+            return false;
     }
+
+     /**
+     * Deletes an existing User_credit model.
+     * If deletion is successful, the browser will be redirected to the 'index' page.
+     * @param integer $id
+     * @return mixed
+     */
+    public function actionUpdatecredit()
+    {
+       
+        $dataProviderUser = User_credit::find()->where(['credit_user_id' => $_POST['user'],'credit_service' => $_POST['type']])->one();
+        if (count($dataProviderUser)>0) {
+            $oldCredit=$dataProviderUser->credit_amount;
+        }else {
+            $oldCredit=0;
+        }
+        
+        $dataProviderUser->credit_amount=$_POST['NewCredit'];
+        $dataProviderUser->save();
+
+        if($oldCredit>$_POST['NewCredit']){
+            $TrancAction="Remove";
+        }else{
+            $TrancAction="Add";
+        }
+
+        $transaction= new Transaction_log;
+        $transaction->trans_user_id=$_POST['user'];
+        $transaction->trans_service=$_POST['type'];
+        $transaction->trans_action=$TrancAction;
+        $transaction->trans_old_creadit=$oldCredit;
+        $transaction->trans_trans_creadit=$_POST['ChangeCredit'];
+        $transaction->trans_new_creadit=$_POST['NewCredit'];
+        $transaction->trans_tansaction_by=$_SESSION['main_user']['User_id'];
+        $transaction->save();
+        
+
+    }
+
+
+    
 
 
 }

@@ -35,12 +35,24 @@ class WhatsappController extends Controller
      */
     public function actionIndex()
     {
-        $dataProvider = new ActiveDataProvider([
+        /*$dataProvider = new ActiveDataProvider([
             'query' => Whatsapp::find(),
         ]);
 
         return $this->render('index', [
             'dataProvider' => $dataProvider,
+        ]);*/
+
+        $type=Yii::$app->request->get('type');
+        
+
+        $responce=Whatsapp::find()
+         ->where(['what_user_id' =>$_SESSION['main_user']['User_id']])
+         ->where(['what_type' =>$type])
+         ->orderBy(['what_id' => SORT_DESC])
+         ->all();
+        return $this->render('index', [
+            'responce' => $responce,
         ]);
     }
 
@@ -64,11 +76,9 @@ class WhatsappController extends Controller
     public function actionCreate()
     {
         $model = new Whatsapp();
+        $CreditCount=0;
+        $filesize=0;
 
-        //print_r($_SESSION['main_user']['User_id']);
-
-       /* print_r($_POST);
-        print_r($_FILES);*/
         if ($_POST) {
           
             $type=Yii::$app->request->get('type');    
@@ -89,6 +99,9 @@ class WhatsappController extends Controller
 
             if ($_POST['uploadNumbers']=="Numbers") {
                     $model->what_list_number=$_POST['WhatsappNumberList'];
+                    $arr = explode("\n", $_POST['WhatsappNumberList']);
+                    $CreditCount=count($arr);
+
             }elseif ($_POST['uploadNumbers']=="File") {
                     if(isset($_FILES['WhatsappNumberFile']['name']))
                     {
@@ -97,7 +110,28 @@ class WhatsappController extends Controller
                         if(move_uploaded_file($file,$newloc))
                         {
                             $model->what_list_file_path=$newloc;
+
+                            //Read a file for number
+                            $ExtratNumbers = array();
+                            $row = 1;
+                                if (($handle = fopen($newloc, "r")) !== FALSE) {
+                                    while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
+                                        $num = count($data);
+                                        $row++;
+                                        for ($c=0; $c < $num; $c++) {
+                                           
+                                            $ExtratNumbers[]= $data[$c];
+                                        }
+                                    }
+                                    fclose($handle);
+                                }
+                                $CreditCount=count($ExtratNumbers);
+                                
                         }
+
+                        //$CreditCount
+
+
                     }
             }
             
@@ -116,6 +150,10 @@ class WhatsappController extends Controller
                         if(move_uploaded_file($file,$newloc))
                         {
                             $model->what_media_file_path=$newloc;
+
+                           $filesize = (filesize($newloc) * .0009765625) * .0009765625; // bytes to 
+                          
+                           $CreditCount=(int)$filesize/2;
                         }
                 }
 
@@ -125,8 +163,14 @@ class WhatsappController extends Controller
                 $model->what_caption=$_POST['MediaCaption'];
             }
         
+        $model->checkIsCreditAvialabel($CreditCount,$type);
+
         }
+
     
+        
+
+       
 
         if ($_POST && $model->save()) {
             return $this->redirect(['view', 'id' => $model->what_id]);

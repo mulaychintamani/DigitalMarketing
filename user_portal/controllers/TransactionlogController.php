@@ -35,12 +35,16 @@ class TransactionlogController extends Controller
      */
     public function actionIndex()
     {
-        $dataProvider = new ActiveDataProvider([
+       /* $dataProvider = new ActiveDataProvider([
             'query' => Transaction_log::find(),
-        ]);
+        ]);*/
 
+         $responce=Transaction_log::find()
+         ->where(['trans_user_id' =>$_SESSION['main_user']['User_id']])
+         ->orderBy(['trans_id' => SORT_DESC])
+         ->all();
         return $this->render('index', [
-            'dataProvider' => $dataProvider,
+            'responce' => $responce,
         ]);
     }
 

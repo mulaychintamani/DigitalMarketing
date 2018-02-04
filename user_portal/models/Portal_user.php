@@ -87,6 +87,17 @@ class Portal_user extends \yii\db\ActiveRecord
             $model_Creadit->credit_amount = $values[$i]['Creadit'];
             $model_Creadit->credit_service = $values[$i]['Type'];
             $model_Creadit->save();
+
+
+        $transaction= new Transaction_log;
+        $transaction->trans_user_id=$id;
+        $transaction->trans_service=$values[$i]['Type'];
+        $transaction->trans_action="Add";
+        $transaction->trans_old_creadit=0;
+        $transaction->trans_trans_creadit=$values[$i]['Creadit'];
+        $transaction->trans_new_creadit=$values[$i]['Creadit'];
+        $transaction->trans_tansaction_by=$_SESSION['main_user']['User_id'];
+        $transaction->save();
         }
 
     }

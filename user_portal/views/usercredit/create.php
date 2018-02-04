@@ -17,6 +17,8 @@ $this->params['breadcrumbs'][] = $this->title;
     <hr>
     <?= $this->render('_form', [
         'model' => $model,
+        'dataProviderUser'=> $dataProviderUser,
+        'dataProviderReseller' => $dataProviderReseller,
     ]) ?>
 
 </div>

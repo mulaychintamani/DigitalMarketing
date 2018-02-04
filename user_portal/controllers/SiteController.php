@@ -61,7 +61,15 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
+
+         if(!isset($_SESSION['main_user']))
+        {
+
+            return $this->redirect('/index.php?r=site/login');
+
+        }{
         return $this->render('index');
+        }
     }
 
     /**
@@ -105,7 +113,7 @@ class SiteController extends Controller
      *
      * @return Response|string
      */
-    public function actionContact()
+    /*public function actionContact()
     {
         $model = new ContactForm();
         if ($model->load(Yii::$app->request->post()) && $model->contact(Yii::$app->params['adminEmail'])) {
@@ -116,15 +124,15 @@ class SiteController extends Controller
         return $this->render('contact', [
             'model' => $model,
         ]);
-    }
+    }*/
 
     /**
      * Displays about page.
      *
      * @return string
      */
-    public function actionAbout()
+    /*public function actionAbout()
     {
         return $this->render('about');
-    }
+    }*/
 }
