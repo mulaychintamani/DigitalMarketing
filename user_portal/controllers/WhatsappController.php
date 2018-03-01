@@ -43,14 +43,24 @@ class WhatsappController extends Controller
             'dataProvider' => $dataProvider,
         ]);*/
 
-        $type=Yii::$app->request->get('type');
-        
+         $type=Yii::$app->request->get('type');
 
-        $responce=Whatsapp::find()
-         ->where(['what_user_id' =>$_SESSION['main_user']['User_id']])
-         ->where(['what_type' =>$type])
-         ->orderBy(['what_id' => SORT_DESC])
-         ->all();
+        if($type=="Filter"){
+            $responce=Whatsapp::find()
+             ->where(['what_user_id' =>$_SESSION['main_user']['User_id']])
+             ->where(['what_type' =>"Filtering"])
+             ->orderBy(['what_id' => SORT_DESC])
+             ->all();
+        }elseif ($type=="whatsapp") {
+            $responce=Whatsapp::find()
+             ->where(['what_user_id' =>$_SESSION['main_user']['User_id']])
+             ->where(['what_type' =>"Media"])
+             ->orWhere(['what_type' =>"Message"])
+             ->orderBy(['what_id' => SORT_DESC])
+             ->all();
+        }
+
+
         return $this->render('index', [
             'responce' => $responce,
         ]);
@@ -135,7 +145,7 @@ class WhatsappController extends Controller
                     }
             }
             
-
+            $model->what_total_numbers=$CreditCount;
             if ($type=="Message"){
            
                 $model->what_text=$_POST['MessageText'];
@@ -158,7 +168,7 @@ class WhatsappController extends Controller
                 }
 
 
-
+               
                 $model->what_media_type=$_POST['WhatsappMediaType'];
                 $model->what_caption=$_POST['MediaCaption'];
             }

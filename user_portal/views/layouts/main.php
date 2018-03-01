@@ -21,6 +21,11 @@
       <?= Html::csrfMetaTags() ?>
       <title><?= Html::encode($this->title) ?></title>
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+      <link rel="stylesheet" type="text/css" href="/css/font-awesome.min.css">
+      <link rel="stylesheet" type="text/css" href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+      <script src="/js/main.js"></script>
+      <link rel="stylesheet" type="text/css" href="/css/main.css">
+     
       <?php $this->head() ?>
    </head>
    <body  style="background-color:#f2f2f2;">
@@ -91,7 +96,7 @@
                     'items' => [
                          ['label' => 'Send Whatsapp Message', 'url' => '/index.php?r=whatsapp/create&type=Message'],
                          ['label' => 'Send Media', 'url' => '/index.php?r=whatsapp/create&type=Media'],
-                         ['label' => 'View Campaign Report', 'url' => '/index.php?r=whatsapp'], //
+                         ['label' => 'View Campaign Report', 'url' => '/index.php?r=whatsapp&type=whatsapp'], //
                          ['label' => 'View Transaction Log', 'url' => '/index.php?r=transactionlog'],
                          '<li class="divider"></li>',
                          '<li class="dropdown-header">Whatsapp Filter</li>',
